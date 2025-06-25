@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Búsqueda de Libros</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/header.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/boton.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/buscador.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/libro.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/formulario.css') }}">
+</head>
+<body>
+    {% include 'header.html' %}
+    <div class="search-container">
+        <form method="POST" action="{{ url_for('inicio') }}">
+            <input type="text" name="search_query" placeholder="Ingrese el nombre del libro que desee buscar..." class="search-bar">
+            <button type="submit" class="button">Buscar</button>
+            <button type="button" class="button" onclick="accionBotonNuevo()">Nuevo</button>
+            <button type="button" class="button" onclick="accionBotonLimpiar()">Limpiar</button>
+        </form>
+    </div>
+
+    {% if books %}
+        <div id="biblioteca" class="biblioteca">
+            <div class="result-container">
+                {% for libro in books %}
+                <div class="libro-card" 
+                data-titulo="{{ libro.titulo }}" 
+                data-autor="{{ libro.autor }}"
+                data-publicacion_año="{{ libro.publicacion_año }}"
+                data-descripcion="{{ libro.descripcion }}"
+                data-categories="{{ libro.categories }}"
+                data-edad_recomendada="{{ libro.edad_recomendada }}"
+                data-lenguaje="{{ libro.lenguaje }}"
+                data-pais="{{ libro.pais }}"
+                data-isbn13="{{ libro.isbns[0].isbn if libro.isbns[0] is defined else 'No disponible' }}"
+                data-isbn10="{{ libro.isbns[1].isbn if libro.isbns[1] is defined else 'No disponible' }}"
+                data-imagen="{{ libro.imagen if libro.imagen else url_for('static', filename='images/imagen_no_disponible.png') }}"
+                data-textsnippet="{{ libro.textSnippet }}"
+                onclick="seleccionarLibro(this)">
+                    <img src="{{ libro.imagen if libro.imagen else url_for('static', filename='images/imagen_no_disponible.png') }}" 
+                         alt="Portada del libro" class="libro-imagen">
+                    <div class="libro-info">
+                        <h3 class="titulo">{{ libro.titulo }}</h3>
+                        <p class="autor"><strong>Autor:</strong> {{ libro.autor }}</p>
+                        <p class="publicacion"><strong>Año de Publicación:</strong> {{ libro.publicacion_año }}</p>
+                        <p class="isbns">
+                            <strong>ISBN-13:</strong> {{ libro.isbns[0].isbn if libro.isbns[0] is defined else 'No disponible' }} 
+                        </p>
+                        <p class="isbns">
+                            <strong>ISBN-10:</strong> {{ libro.isbns[1].isbn if libro.isbns[1] is defined else 'No disponible' }}
+                        </p>
+                        <p class="textSnippet">{{ libro.textSnippet }}</p>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    {% else %}
+        <p class="no-results">No se encontraron resultados.</p>
+    {% endif %}
+
+    <!-- Nuevo contenedor biblioteca, inicialmente oculto -->
+    <div id="formulario" class="formulario" style="display: none;">
+        <!-- <h2>Formulario de Nuevo Libro</h2> -->
+        <form>
+            <!-- Imagen -->
+            <img id="imagenShow" name="imagenShow" alt="Imagen del libro" style="max-width: 200px;">
+            <input type="text" id="imagen" name="imagen" placeholder="Pegue una nueva URL de imagen si es necesario">
+            <!--  -->
+            <div class="title-author-publicacion-wrapper">
+                <div>
+                    <label for="titulo">Título:</label>
+                    <input type="text" id="titulo" name="titulo" required>
+                </div>
+                <div>
+                    <label for="autor">Autor:</label>
+                    <input type="text" id="autor" name="autor" required>
+                </div>
+                <div>
+                    <label for="publicacion_año">Año de Publicación:</label>
+                    <input type="text" id="publicacion_año" name="publicacion_año" required>        
+                </div>
+            </div>
+            <!--  -->
+            <div>
+                <label for="categories">Categoria:</label>
+                <div class="categories-edad-wrapper">
+                    <input type="text" id="categories" name="categories" required>
+                </div>
+                <div>
+                    <label for="edad_recomendada">Edad Recomendada:</label>
+                    <input type="text" id="edad_recomendada" name="edad_recomendada" required>
+                </div>
+            </div>
+            <div class="idioma-pais-wrapper">
+                <div>
+                    <label for="lenguaje">Idioma:</label>
+                    <input type="text" id="lenguaje" name="lenguaje" required>
+                </div>
+                <div>
+                    <label for="pais">Pais:</label>
+                    <input type="text" id="pais" name="pais" required>
+                </div>
+            </div>
+            <!--  -->
+            <div class="isbn13-isbn10-wrapper">
+                <div>
+                    <label for="isbn13">ISBN-13:</label>
+                    <input type="text" id="isbn13" name="isbn13" required>
+                </div>
+                <div>
+                    <label for="isbn10">ISBN-10:</label>
+                    <input type="text" id="isbn10" name="isbn10" required>
+                </div>
+            </div>
+            <!--  -->
+            <label for="descripcion">Descripcion:</label>
+            <textarea id="descripcion" name="descripcion"></textarea>
+            <!--  -->
+            <label for="textSnippet">Fragmento:</label>
+            <textarea id="textSnippet" name="textSnippet"></textarea>
+            <!--  -->
+
+
+            <button type="submit" class="button">Guardar</button>
+        </form>
+    </div>
+
+    <script>
+        function seleccionarLibro(libro) {
+            console.log(libro);
+            //
+            document.getElementById('biblioteca').style.display = 'none';  // Oculta el contenedor 'biblioteca'
+            document.getElementById('formulario').style.display = 'block';  // Muestra el nuevo contenedor de formulario
+            // Cargar los datos del libro en el formulario
+            document.getElementById('titulo').value = libro.dataset.titulo;
+            document.getElementById('autor').value = libro.dataset.autor;
+            document.getElementById('publicacion_año').value = libro.dataset.publicacion_año;
+            document.getElementById('descripcion').value = libro.dataset.descripcion;
+            document.getElementById('categories').value = libro.dataset.categories;
+            document.getElementById('edad_recomendada').value = libro.dataset.edad_recomendada;
+            document.getElementById('lenguaje').value = libro.dataset.lenguaje;
+            document.getElementById('pais').value = libro.dataset.pais;
+            document.getElementById('isbn13').value = libro.dataset.isbn13;
+            document.getElementById('isbn10').value = libro.dataset.isbn10;
+            document.getElementById('textSnippet').value = libro.dataset.textsnippet;
+            document.getElementById('imagenShow').src = libro.dataset.imagen;
+            document.getElementById('imagen').value = libro.dataset.imagen;
+            document.getElementById('bandera').src = libro.dataset.bandera;
+
+        }
+
+        function accionBotonNuevo() {
+            document.getElementById('biblioteca').style.display = 'none';  // Oculta la biblioteca
+            document.getElementById('formulario').style.display = 'block';  // Muestra el formulario vacío para un nuevo libro
+        }
+
+        function accionBotonLimpiar(){
+            document.getElementById('biblioteca').style.display = 'none';
+            document.getElementById('formulario').style.display = 'none';
+        }
+
+    </script>
+</body>
+</html>

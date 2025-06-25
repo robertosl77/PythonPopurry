@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulario de Libro</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/header.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/formulario.css') }}">
+</head>
+<body>
+
+    {% include 'header.html' %}
+    {% if libro %}
+    <form method="POST" action="{{ url_for('guardar_libro') }}">
+        <h2>Formulario de Libro</h2>
+    
+        <label for="titulo">Título:</label>
+        <input type="text" id="titulo" name="titulo" value="{{ libro.titulo }}" required>
+    
+        <label for="autor">Autor:</label>
+        <input type="text" id="autor" name="autor" value="{{ libro.autor }}" required>
+
+        <label for="publicacion_año">Año de Publicación:</label>
+        <input type="text" id="publicacion_año" name="publicacion_año" value="{{ libro.publicacion_año }}" required>
+    
+        <label for="isbn_13">ISBN-13:</label>
+        <input type="text" id="isbn_13" name="isbn_13" value="{{ libro.isbns[0].isbn }}" required>
+    
+        <label for="isbn_10">ISBN-10:</label>
+        <input type="text" id="isbn_10" name="isbn_10" value="{{ libro.isbns[1].isbn }}" required>
+    
+        <label for="textSnippet">Fragmento:</label>
+        <textarea id="textSnippet" name="textSnippet">{{ libro.textSnippet }}</textarea>
+    
+        <label for="imagen">Imagen:</label>
+        <img src="{{ libro.imagen }}" alt="Imagen del libro" style="max-width: 200px;">
+        <input type="text" id="imagen" name="imagen" value="{{ libro.imagen }}" placeholder="Pegue una nueva URL de imagen si es necesario">
+    
+        <button type="submit">Guardar</button>
+    </form>
+    {% endif %}
+    
+    
+    
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            let libroSeleccionado = JSON.parse(localStorage.getItem('libroSeleccionado'));
+            
+            if (libroSeleccionado) {
+                console.log(libroSeleccionado); // Verifica todo el objeto en la consola
+                document.getElementById('titulo').value = libroSeleccionado.titulo || '';
+                document.getElementById('autor').value = libroSeleccionado.autor || '';
+                document.getElementById('publicacion_año').value = libroSeleccionado.publicacion_año || '';
+
+                // Validación para evitar errores si no hay isbns o están vacíos
+                if (libroSeleccionado.isbns && libroSeleccionado.isbns.length > 0) {
+                    document.getElementById('isbn_13').value = libroSeleccionado.isbns[0]?.isbn || 'No disponible';
+                    document.getElementById('isbn_10').value = libroSeleccionado.isbns[1]?.isbn || 'No disponible';
+                } else {
+                    document.getElementById('isbn_13').value = 'No disponible';
+                    document.getElementById('isbn_10').value = 'No disponible';
+                }
+
+                document.getElementById('textSnippet').value = libroSeleccionado.textSnippet || '';
+                document.getElementById('imagen').src = libroSeleccionado.imagen || '/static/images/no_cover_available.png';
+            }
+        });
+
+    </script>
+    
+    
+    
+
+</body>
+</html>

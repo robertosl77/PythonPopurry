@@ -1,0 +1,42 @@
+header {
+    background-color: #00735a;
+    color: #ffffff;
+    padding: 5px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.header-left {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.header-left h1 {
+    font-size: 2rem;
+    margin: 0;
+}
+
+.header-left p {
+    font-size: 1rem;
+    margin: 5px 0;
+    font-style: italic;
+}
+
+.header-right {
+    text-align: right;
+}
+
+.header-right p {
+    margin: 5px 0;
+}
+
+a {
+    color: #ffdd57;
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}

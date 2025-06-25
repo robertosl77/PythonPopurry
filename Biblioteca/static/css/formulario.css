@@ -1,0 +1,137 @@
+/* General form container */
+.formulario {
+    background-color: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    padding: 25px;
+    max-width: 900px;
+    width: 100%;
+    margin: 40px auto;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+/* Labels inside the form */
+.formulario label {
+    font-weight: bold;
+    color: #333;
+    font-size: 1rem;
+    margin-bottom: 5px;
+}
+
+/* Input and textarea fields with smaller font */
+[type="text"],
+.formulario textarea {
+    width: 100%;
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    background-color: #f9f9f9;
+    font-size: 0.9rem; /* Smaller font size */
+    outline: none;
+    transition: border 0.3s ease;
+}
+
+[type="text"]:focus,
+.formulario textarea:focus {
+    border-color: #4A90E2;
+}
+
+/* Image styling */
+.formulario #imagenShow {
+    border-radius: 8px;
+    margin-bottom: 15px;
+    margin-bottom: 5px;
+    max-width: 50%;
+    display: block;
+    height: auto;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+    .formulario {
+        width: 95%;
+    }
+}
+
+/* Wrapper for title and author to keep them on the same line */
+.formulario .title-author-publicacion-wrapper {
+    display: flex;
+    gap: 30px; /* Ajusta el espacio entre los elementos */
+    margin-bottom: 15px; /* Añade margen inferior para separarlos de otros campos */
+}
+
+.formulario .categories-edad-wrapper 
+{
+    display: flex;
+    gap: 30px; /* Ajusta el espacio entre los elementos */
+    margin-bottom: 15px; /* Añade margen inferior para separarlos de otros campos */
+}
+
+.formulario .idioma-pais-wrapper 
+{
+    display: flex;
+    gap: 30px; /* Ajusta el espacio entre los elementos */
+    margin-bottom: 15px; /* Añade margen inferior para separarlos de otros campos */
+}
+
+.formulario .isbn13-isbn10-wrapper 
+{
+    display: flex;
+    gap: 30px; /* Ajusta el espacio entre los elementos */
+    margin-bottom: 15px; /* Añade margen inferior para separarlos de otros campos */
+}
+
+/* Ensure the title and author inputs are flexible and align properly */
+.formulario#titulo,
+.formulario#autor,
+.formulario#categories,
+.formulario#edad,
+.formulario#idioma,
+.formulario#pais,
+.formulario#isbn13,
+.formulario#isbn10
+{
+    flex: 1;
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    background-color: #f9f9f9;
+    font-size: 0.9rem; /* Achica un poco el tamaño de la letra */
+    outline: none;
+    transition: border 0.3s ease;
+    width: 250px;
+}
+
+#publicacion_año
+{
+    flex: 1;
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    background-color: #f9f9f9;
+    font-size: 0.9rem; /* Achica un poco el tamaño de la letra */
+    outline: none;
+    transition: border 0.3s ease;
+    width: 150px;
+}
+
+
+
+#titulo:focus,
+#autor:focus,
+#publicacion_año:focus 
+#categories:focus 
+#edad:focus 
+#idioma:focus 
+#pais:focus 
+#isbn13
+#isbn10
+{
+    border-color: #4A90E2;
+}
+
+.control1 {
+    width: 200px;
+}

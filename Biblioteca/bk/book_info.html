@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Información del Libro</title>
+</head>
+<body>
+    <h1>Detalles del Libro</h1>
+
+    {% if book_info %}
+        <h2>{{ book_info.title }}</h2>
+        <p><strong>Autor(es):</strong> {{ book_info.authors }}</p>
+        <p><strong>Editorial:</strong> {{ book_info.publisher }}</p>
+        <p><strong>Fecha de Publicación:</strong> {{ book_info.publishedDate }}</p>
+        <p><strong>Descripción:</strong> {{ book_info.description }}</p>
+        <p><strong>ISBN:</strong> {{ book_info.isbn }}</p>
+        <p><strong>Categorías:</strong> {{ book_info.categories }}</p>
+        <p><strong>Número de Páginas:</strong> {{ book_info.pageCount }}</p>
+        <p><strong>Idioma:</strong> {{ book_info.language }}</p>
+        <p><strong>País de Venta:</strong> {{ book_info.country }}</p>
+        <p><strong>Fragmento:</strong> {{ book_info.textSnippet }}</p>
+        {% if book_info.thumbnail %}
+            <img src="{{ book_info.thumbnail }}" alt="Portada del libro">
+        {% endif %}
+    {% else %}
+        <p>No se encontró información para el ISBN proporcionado.</p>
+    {% endif %}
+
+    <a href="/">Volver a la búsqueda</a>
+</body>
+</html>
